@@ -23,23 +23,15 @@ class App extends Component {
 
   onGenerate = _ => {
     // validate state
-    let errors = this.validateForGenerate();
-    if (errors.length !== 0) {
-      this.setState({ errors: errors });
-      return;
-    }
+    // let errors = this.validateForGenerate();
+    // if (errors.length !== 0) {
+    //   this.setState({ errors: errors });
+    //   return;
+    // }
 
-    let supplies = null;
-    let maxTry = 100;
+    this.state.supplies.push(this.selectSupply())
 
-    for (let i = 0; i < maxTry; i++) {
-      supplies = this.selectSupply();
-      if (supplies !== null) {
-        break;
-      }
-    }
-
-    this.setState({ supplies: supplies, errors : []});
+    this.setState({ supplies: this.state.supplies, errors : []});
   }
 
   validateForGenerate() {
@@ -63,44 +55,14 @@ class App extends Component {
   }
 
   selectSupply() {
-    let supplies = [];
-    let numberOfSupplies = this.state.numberOfSupplies
+    let kingdom = { };
 
-    for (let i = 0; i < numberOfSupplies; i++) {
-      supplies.push({ kingdom: {}, events: [], landmarks: [] });
-    }
-
-    let rest = [];
-    let baneNeeded = -1;
-    Object.entries(this.state.kingdom).forEach(kv => {
-      let [name, num] = kv;
-
-      if (num < 1) {
-        return;
-      }
-
-      let cards = this.shuffleArray(kingdomList[name]);
-      for (let i = 0; i < numberOfSupplies; i++) {
-        supplies[i].kingdom[name] = cards.slice(i * num, (i + 1) * num);
-        if (name === "cornucopia" && supplies[i].kingdom[name].find(card => card.name === "魔女娘") !== undefined) {
-          baneNeeded = i;
-        }
-      }
-
-      rest.push(...cards.slice(numberOfSupplies * num));
+    let restCards = this.restCards();
+    Object.entries(restCards).forEach(([expansion, cards]) => {
+      kingdom[expansion] = this.shuffleArray(cards).slice(0, this.state.kingdom[expansion]);
     });
 
-    if (baneNeeded >= 0) {
-      let bane = this.shuffleArray(rest).find(card => card.bane);
-
-      if (bane === undefined) {
-        return null;
-      }
-
-      supplies[baneNeeded].bane = bane;
-    }
-
-    return supplies;
+    return { kingdom: kingdom };
   }
 
   shuffleArray(ary) {
@@ -112,6 +74,17 @@ class App extends Component {
     return copied;
   }
 
+  restCards() {
+    let rest = {};
+    Object.entries(kingdomList).forEach(([expansion, cards]) => {
+      let usedCards = [].concat(...this.state.supplies.map((supply) => supply.kingdom[expansion]));
+      rest[expansion] = cards.filter((card) => {
+        return !usedCards.some((usedCard) => usedCard.name === card.name)
+      });
+    });
+    return rest
+  }
+
   render() {
     let errors = '';
     if (this.state.errors.length !== 0) {
@@ -121,16 +94,12 @@ class App extends Component {
       </div>;
     }
     let supplies = this.state.supplies.map((supply, i) => {
-      let cards = Object.keys(supply.kingdom).map(ex => supply.kingdom[ex].map(card => card.name).join(' ')).join(' ');
-      let bane = typeof supply.bane === 'object' ? `災い: ${supply.bane.name}` : '';
-      let landscapes = supply.events.concat(supply.landmarks).map(card => card.name).join(' ')
+      let kingdom = Object.keys(supply.kingdom).map(ex => supply.kingdom[ex].map(card => card.name).join(' ')).join(' ');
 
       return (
         <div className="panel panel-default" key={i}>
           <div className="panel-body">
-            <div>{cards}</div>
-            <div>{landscapes}</div>
-            <div>{bane}</div>
+            <div>{kingdom}</div>
           </div>
         </div>
       )
