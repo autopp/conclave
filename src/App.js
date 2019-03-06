@@ -6,14 +6,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      kingdom: { basic: 0, nocturne: 0 }, supplies: [], errors: []
+      kingdom: { basic: 5, nocturne: 5 }, supplies: [], errors: []
     };
   }
 
   onChangeKingdom = (name) => {
     return e => {
       let kingdom = Object.assign({}, this.state.kingdom);
+      let n = parseInt(e.target.value, 10);
       kingdom[name] = parseInt(e.target.value, 10);
+      let other = name === 'basic' ? 'nocturne' : 'base';
+      kingdom[other] = 10 - n;
       this.setState({ kingdom: kingdom });
     };
   }
