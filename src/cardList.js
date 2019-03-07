@@ -39,7 +39,7 @@ export const kingdomList = {
     { name: "呪われた村", hex: true },
     { name: "悪人のアジト" },
     { name: "悪魔の工房", imp: true },
-    { name: "ドルイド", boon: true, will_o_wisp: true },
+    { name: "ドルイド", druid: true },
     { name: "悪魔祓い", will_o_wisp: true, imp: true, ghost: true },
     { name: "忠犬" },
     { name: "愚者", boon: true, will_o_wisp: true, heirloom: '幸運のコイン' },
@@ -66,3 +66,18 @@ export const kingdomList = {
 };
 
 export const nameMap = { basic: "基本", nocturne: "夜想曲" };
+
+export const boonList = [
+  { name: '大地の恵み' },
+  { name: '田畑の恵み' },
+  { name: '炎の恵み' },
+  { name: '森の恵み' },
+  { name: '月の恵み' },
+  { name: '山の恵み' },
+  { name: '川の恵み' },
+  { name: '海の恵み' },
+  { name: '空の恵み' },
+  { name: '太陽の恵み' },
+  { name: '沼の恵み', will_o_wisp: true },
+  { name: '風の恵み' }
+];

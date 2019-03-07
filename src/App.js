@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { kingdomList, nameMap } from './cardList.js'
+import { kingdomList, nameMap, boonList } from './cardList.js'
 
 class App extends Component {
   constructor(props) {
@@ -55,14 +55,19 @@ class App extends Component {
   }
 
   selectSupply() {
-    let kingdom = { };
+    let supply = {};
+    let kingdom = {};
 
     let restCards = this.restCards();
     Object.entries(restCards).forEach(([expansion, cards]) => {
       kingdom[expansion] = this.shuffleArray(cards).slice(0, this.state.kingdom[expansion]);
     });
+    supply.kingdom = kingdom
+    if (kingdom['nocturne'].some((card) => card.druid)) {
+      supply.druid_boons = this.shuffleArray(boonList).slice(0, 3);
+    }
 
-    return { kingdom: kingdom };
+    return supply;
   }
 
   shuffleArray(ary) {
@@ -102,11 +107,12 @@ class App extends Component {
         }
       });
       heirlooms = heirlooms.length > 0 ? <div>{`家宝: ${heirlooms.join(' ')}`}</div> : undefined;
-
+      let druid_boons = supply.druid_boons ? <div>{`ドルイドの恵み: ${supply.druid_boons.map(card => card.name).join(' ')}`}</div> : undefined;
       return (
         <div className="panel panel-default" key={i}>
           <div className="panel-body">
             <div>{kingdom}</div>
+            {druid_boons}
             {heirlooms}
           </div>
         </div>
@@ -148,7 +154,7 @@ class App extends Component {
         </div>
         <div className="row" id="supplies">
           <div className="col-lg-12">
-            {supplies}
+            {supplies.reverse()}
           </div>
         </div>
       </div>
