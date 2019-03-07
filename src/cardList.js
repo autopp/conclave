@@ -67,6 +67,11 @@ export const kingdomList = {
 
 export const nameMap = { basic: "基本", nocturne: "夜想曲" };
 
+export const extraMap = {
+  boon: "恵み", hex: "呪詛", will_o_wisp: "ウィル・オ・ウィスプ", imp: "小悪魔",
+  ghost: "幽霊", wish: "願い", bat: "蝙蝠"
+};
+
 export const boonList = [
   { name: '大地の恵み' },
   { name: '田畑の恵み' },

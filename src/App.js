@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { kingdomList, nameMap, boonList } from './cardList.js'
+import { kingdomList, nameMap, extraMap, boonList } from './cardList.js'
 
 class App extends Component {
   constructor(props) {
@@ -108,12 +108,20 @@ class App extends Component {
       });
       heirlooms = heirlooms.length > 0 ? <div>{`家宝: ${heirlooms.join(' ')}`}</div> : undefined;
       let druid_boons = supply.druid_boons ? <div>{`ドルイドの恵み: ${supply.druid_boons.map(card => card.name).join(' ')}`}</div> : undefined;
+      let extraCards = [];
+      ['boon', 'hex', 'will_o_wisp', 'imp', 'ghost', 'wish', 'bat',].forEach(name => {
+        if (supply.kingdom['nocturne'].some(card => card[name])) {
+          extraCards.push(extraMap[name]);
+        }
+      });
+      extraCards = extraCards.length > 0 ? <div>{`サプライ外: ${extraCards.join(' ')}`}</div> : undefined;
       return (
         <div className="panel panel-default" key={i}>
           <div className="panel-body">
             <div>{kingdom}</div>
             {druid_boons}
             {heirlooms}
+            {extraCards}
           </div>
         </div>
       )
