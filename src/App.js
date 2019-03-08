@@ -99,7 +99,7 @@ class App extends Component {
       </div>;
     }
     let supplies = this.state.supplies.map((supply, i) => {
-      let kingdom = Object.keys(supply.kingdom).map(ex => `${nameMap[ex]} : ${supply.kingdom[ex].map(card => card.name).join(' ')}`).map((cards, i) => <div key={i}>{cards}</div>);
+      let kingdom = Object.keys(supply.kingdom).map(ex => `${supply.kingdom[ex].map(card => card.name).join(' ')}`).map((cards, i) => <div key={i}>{cards}</div>);
       let heirlooms = [];
       supply.kingdom['nocturne'].forEach((card) => {
         if (card.heirloom) {
