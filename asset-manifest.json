@@ -1,0 +1,13 @@
+{
+  "main.css": "/conclave/static/css/main.acf1213d.chunk.css",
+  "main.js": "/conclave/static/js/main.36e6b7b9.chunk.js",
+  "main.js.map": "/conclave/static/js/main.36e6b7b9.chunk.js.map",
+  "static/js/1.f20e3543.chunk.js": "/conclave/static/js/1.f20e3543.chunk.js",
+  "static/js/1.f20e3543.chunk.js.map": "/conclave/static/js/1.f20e3543.chunk.js.map",
+  "runtime~main.js": "/conclave/static/js/runtime~main.452216c6.js",
+  "runtime~main.js.map": "/conclave/static/js/runtime~main.452216c6.js.map",
+  "static/css/main.acf1213d.chunk.css.map": "/conclave/static/css/main.acf1213d.chunk.css.map",
+  "index.html": "/conclave/index.html",
+  "precache-manifest.57eb156fe6b30934dd8cdc58479deb67.js": "/conclave/precache-manifest.57eb156fe6b30934dd8cdc58479deb67.js",
+  "service-worker.js": "/conclave/service-worker.js"
+}
