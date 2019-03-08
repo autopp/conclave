@@ -64,7 +64,7 @@ class App extends Component {
     });
     supply.kingdom = kingdom
     if (kingdom['nocturne'].some((card) => card.druid)) {
-      supply.druid_boons = this.shuffleArray(boonList).slice(0, 3);
+      supply.druidBoons = this.shuffleArray(boonList).slice(0, 3);
     }
 
     return supply;
@@ -107,19 +107,22 @@ class App extends Component {
         }
       });
       heirlooms = heirlooms.length > 0 ? <div>{`家宝: ${heirlooms.join(' ')}`}</div> : undefined;
-      let druid_boons = supply.druid_boons ? <div>{`ドルイドの恵み: ${supply.druid_boons.map(card => card.name).join(' ')}`}</div> : undefined;
+      let druidBoons = supply.druidBoons ? <div>{`ドルイドの恵み: ${supply.druidBoons.map(card => card.name).join(' ')}`}</div> : undefined;
       let extraCards = [];
-      ['boon', 'hex', 'will_o_wisp', 'imp', 'ghost', 'wish', 'bat',].forEach(name => {
+      ['boon', 'hex', 'imp', 'ghost', 'wish', 'bat',].forEach(name => {
         if (supply.kingdom['nocturne'].some(card => card[name])) {
           extraCards.push(extraMap[name]);
         }
       });
+      if (supply.kingdom['nocturne'].some(card => card['will_o_wisp']) || supply.druidBoons && supply.druidBoons.some(boon => boon['will_o_wisp'])) {
+        extraCards.push(extraMap['will_o_wisp']);
+      }
       extraCards = extraCards.length > 0 ? <div>{`サプライ外: ${extraCards.join(' ')}`}</div> : undefined;
       return (
         <div className="panel panel-default" key={i}>
           <div className="panel-body">
             <div>{kingdom}</div>
-            {druid_boons}
+            {druidBoons}
             {heirlooms}
             {extraCards}
           </div>
