@@ -23,11 +23,11 @@ class App extends Component {
 
   onGenerate = _ => {
     // validate state
-    // let errors = this.validateForGenerate();
-    // if (errors.length !== 0) {
-    //   this.setState({ errors: errors });
-    //   return;
-    // }
+    let errors = this.validateForGenerate();
+    if (errors.length !== 0) {
+      this.setState({ errors: errors });
+      return;
+    }
 
     this.state.supplies.push(this.selectSupply())
 
@@ -37,16 +37,14 @@ class App extends Component {
   validateForGenerate() {
     let errors = [];
     let kingdom = this.state.kingdom;
-    let numberOfSupplies = this.state.numberOfSupplies;
 
     if (Object.values(kingdom).reduce((acc, x) => acc + x) !== 10) {
       errors.push("王国カードの数が10ではありません");
     }
 
-    Object.entries(kingdom).forEach(kv => {
-      let [name, num] = kv;
-
-      if (num * numberOfSupplies > kingdomList[name].length) {
+    let restCards = this.restCards()
+    Object.entries(kingdom).forEach(([name, num]) => {
+      if (num > restCards[name].length) {
         errors.push(`${nameMap[name]}のカード枚数が足りません`)
       }
     })
@@ -114,7 +112,7 @@ class App extends Component {
           extraCards.push(extraMap[name]);
         }
       });
-      if (supply.kingdom['nocturne'].some(card => card['will_o_wisp']) || supply.druidBoons && supply.druidBoons.some(boon => boon['will_o_wisp'])) {
+      if (supply.kingdom['nocturne'].some(card => (card['will_o_wisp']) || (supply.druidBoons && supply.druidBoons.some(boon => boon['will_o_wisp'])))) {
         extraCards.push(extraMap['will_o_wisp']);
       }
       extraCards = extraCards.length > 0 ? <div>{`サプライ外: ${extraCards.join(' ')}`}</div> : undefined;
