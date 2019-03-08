@@ -88,6 +88,24 @@ class App extends Component {
     return rest
   }
 
+  genQuery() {
+    let ary = [`sn=${encodeURIComponent(this.state.supplies.length)}`];
+    this.state.supplies.forEach((supply, i) => {
+      ['basic', 'nocturne'].forEach(ex => {
+        ary.push(`s${i}${ex[0]}n=${encodeURIComponent(supply.kingdom[ex].length)}`)
+        supply.kingdom[ex].forEach((card, j) => {
+          ary.push(`s${i}${ex[0]}${j}=${encodeURIComponent(card.id)}`)
+        });
+      });
+      if (supply.druidBoons) {
+        supply.druidBoons.forEach((boon, j) => {
+          ary.push(`s${i}d${j}=${encodeURIComponent(boon.id)}`);
+        });
+      }
+    });
+    return `?${ary.join('&')}`;
+  }
+
   render() {
     let errors = '';
     if (this.state.errors.length !== 0) {
@@ -168,6 +186,11 @@ class App extends Component {
         </div>
       </div>
     );
+  }
+
+  componentDidUpdate(_prevProps, _prevState) {
+    let qry = this.genQuery();
+    window.history.replaceState('', '', qry);
   }
 }
 
