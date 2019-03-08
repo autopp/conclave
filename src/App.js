@@ -5,9 +5,59 @@ import { kingdomList, nameMap, extraMap, boonList } from './cardList.js'
 class App extends Component {
   constructor(props) {
     super(props);
+    let { supplies, errors } = this.parseQuery(window.location.search.substring(1));
     this.state = {
-      kingdom: { basic: 5, nocturne: 5 }, supplies: [], errors: []
+      kingdom: { basic: 5, nocturne: 5 }, supplies: supplies, errors: errors
     };
+  }
+
+  parseQuery(qry) {
+    let supplies = [];
+
+    let params = {};
+    qry.split('&').forEach(kv => {
+      let [k, v] = kv.split('=');
+      params[k] = v;
+    });
+
+    if (!params['sn']) {
+      return { supplies: [], errors: [] };
+    }
+
+    for (let i = 0; i < parseInt(params['sn']); i++) {
+      let supply = {};
+      let kingdom = {};
+      ['basic', 'nocturne'].forEach(ex => {
+        let cards = [];
+        for (let j = 0; j < parseInt(params[`s${i}${ex[0]}n`]); j++) {
+          let id = parseInt(params[`s${i}${ex[0]}${j}`]);
+          let card = kingdomList[ex].find(c => c.id === id);
+
+          if (!card) {
+            return { supplies: [], errors: [`invalid parameter: s${i}${ex[0]}${j}}=${id}`] }
+          }
+          cards.push(card);
+        }
+        kingdom[ex] = cards;
+      });
+      supply.kingdom = kingdom;
+
+      if (params[`s${i}d0`]) {
+        supply.druidBoons = [];
+        for (let j = 0; j < 3; j++) {
+          let id = parseInt(params[`s${i}d${j}`])
+          let boon = boonList.find(b => b.id === id);
+          if (!boon) {
+            return { supplies: [], errors: [`invalid parameter: s${i}d${j}=${id}`] }
+          }
+          supply.druidBoons.push(boon);
+        }
+      }
+
+      supplies.push(supply);
+    }
+
+    return { supplies: supplies, errors: [] };
   }
 
   onChangeKingdom = (name) => {
