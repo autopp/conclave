@@ -29,7 +29,7 @@ export const kingdomList = {
   ],
   nocturne: [
     { id: 1, name: "詩人", boon: true, will_o_wisp: true },
-    { id: 2, name: "恵みの村", boon: true },
+    { id: 2, name: "恵みの村", boon: true, will_o_wisp: true },
     { id: 3, name: "墓地", heirloom: '呪われた鏡', ghost: true },
     { id: 4, name: "取り替え子" },
     { id: 5, name: "カブラー" },
@@ -68,7 +68,7 @@ export const nameMap = { basic: "基本", nocturne: "夜想曲" };
 
 export const extraMap = {
   boon: "恵み", hex: "呪詛", will_o_wisp: "ウィル・オ・ウィスプ", imp: "小悪魔",
-  ghost: "幽霊", wish: "願い", bat: "蝙蝠"
+  ghost: "幽霊", wish: "願い", bat: "蝙蝠", zombie: 'ゾンビ3種'
 };
 
 export const boonList = [

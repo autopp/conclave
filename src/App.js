@@ -175,7 +175,7 @@ class App extends Component {
       heirlooms = heirlooms.length > 0 ? <div>{`家宝: ${heirlooms.join(' ')}`}</div> : undefined;
       let druidBoons = supply.druidBoons ? <div>{`ドルイドの恵み: ${supply.druidBoons.map(card => card.name).join(' ')}`}</div> : undefined;
       let extraCards = [];
-      ['boon', 'hex', 'imp', 'ghost', 'wish', 'bat',].forEach(name => {
+      ['boon', 'hex', 'imp', 'ghost', 'wish', 'bat', 'zombie' ].forEach(name => {
         if (supply.kingdom['nocturne'].some(card => card[name])) {
           extraCards.push(extraMap[name]);
         }
